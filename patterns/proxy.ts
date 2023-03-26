@@ -11,11 +11,12 @@ const personProxy = new Proxy<typeof person>(person, {
     console.log(`${prop} value is ${obj[prop]}`);
   },
   set: (obj, prop: keyof typeof person, value: PersonValues) => {
-    if (prop in obj) {
-      obj[prop] = value;
+    try {
+      Reflect.set(obj, prop, value);
       return true;
+    } catch {
+      return false;
     }
-    return false;
   },
 });
 
